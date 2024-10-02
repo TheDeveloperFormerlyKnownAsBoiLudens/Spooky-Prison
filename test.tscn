@@ -1,0 +1,77 @@
+[gd_scene load_steps=10 format=3 uid="uid://b3graphau1nlk"]
+
+[ext_resource type="PackedScene" uid="uid://cetf7h4prmcgv" path="res://player/Player.tscn" id="1_vashq"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_urkn4"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_akfkg"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="4_fmiu1"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_4up8a"]
+[ext_resource type="PackedScene" uid="uid://dcy4yf21wmasw" path="res://interactables/liftable.tscn" id="6_3qrlu"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_btqqo"]
+
+[sub_resource type="Resource" id="Resource_epfl0"]
+script = ExtResource("3_akfkg")
+duration = 1.0
+transition = 0
+ease = 2
+
+[sub_resource type="Resource" id="Resource_u1n5w"]
+script = ExtResource("4_fmiu1")
+cull_mask = 1048575
+h_offset = 0.0
+v_offset = 0.0
+projection = 0
+fov = 75.0
+size = 1.0
+frustum_offset = Vector2(0, 0)
+near = 0.05
+far = 4000.0
+
+[node name="TestScene" type="Node3D"]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 28.2644, 0)
+light_energy = 10.0
+spot_range = 39.932
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4534, 5.21182)
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D"]
+script = ExtResource("5_4up8a")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="Warehouse" type="CSGBox3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
+flip_faces = true
+size = Vector3(30, 30, 30)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0427666, 0, 0)
+shape = SubResource("WorldBoundaryShape3D_btqqo")
+
+[node name="Obstacles" type="Node3D" parent="."]
+
+[node name="ShippingContainer" type="CSGBox3D" parent="Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.66484, 0.505313, 0)
+size = Vector3(2.96582, 1, 1)
+
+[node name="ShippingContainer2" type="CSGBox3D" parent="Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.26112, 0.505313, -4.79794)
+size = Vector3(2.96582, 1, 1)
+
+[node name="ShippingContainer3" type="CSGBox3D" parent="Obstacles"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -7.26112, 0.505313, 4.94385)
+size = Vector3(2.96582, 1, 1)
+
+[node name="PhantomCamera3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4534, 5.21182)
+script = ExtResource("2_urkn4")
+tween_resource = SubResource("Resource_epfl0")
+camera_3d_resource = SubResource("Resource_u1n5w")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_vashq")]
+
+[node name="Liftable" parent="." instance=ExtResource("6_3qrlu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.52434, 0, 0)

@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://cetf7h4prmcgv"]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_010mo"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_irlch"]
+radial_segments = 8
+rings = 2
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hciua"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6tk0g"]
+size = Vector3(1, 1.71887, 1)
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_010mo")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00950217, 1.00665, 0.00930655)
+mesh = SubResource("CapsuleMesh_irlch")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_hciua")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27101, 1.01863, 0)
+shape = SubResource("BoxShape3D_6tk0g")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
