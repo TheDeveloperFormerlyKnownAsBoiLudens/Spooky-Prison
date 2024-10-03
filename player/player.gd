@@ -1,9 +1,17 @@
 extends CharacterBody3D
 
-
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
+@onready var carry_point: Node3D = $CarryPoint
+
+var input_dir: Vector2
+var potential_interactable: Node3D
+var interactable_carried: Node3D
+var is_carrying: bool = false;
+
+func _ready() -> void:
+	print(get_parent())
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -16,8 +24,13 @@ func _physics_process(delta: float) -> void:
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	var direction: Vector3 = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	handle_direction_change()
+	# if velocity.x > 0:
+	# 	player_sprite.flip_h = true
+	# elif velocity.x < 0:
+	# 	player_sprite.flip_h = false
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
@@ -27,6 +40,29 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+func handle_direction_change() -> void:
+	if velocity.x > 0:
+		carry_point.position.x = 0.85
+	# 	player_sprite.flip_h = true
+	elif velocity.x < 0:
+		carry_point.position.x = -0.85
+	# 	player_sprite.flip_h = false
 
-func _on_area_3d_body_entered(body:Node3D) -> void:
-	print(body)
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("interact"):
+		if interactable_carried == null and potential_interactable != null:
+			print(potential_interactable)
+			interactable_carried = potential_interactable
+			interactable_carried.reparent(carry_point)
+			interactable_carried.position = Vector3.ZERO
+		else:
+			interactable_carried.reparent(self.get_parent())
+			interactable_carried = null
+
+	
+func _on_area_3d_body_entered(interactable:Node3D) -> void:
+	potential_interactable = interactable
+
+func _on_area_3d_body_exited(interactable:Node3D) -> void:
+	potential_interactable = null
+	
