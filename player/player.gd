@@ -11,17 +11,17 @@ var potential_interactable: RigidBody3D
 var interactable_carried: RigidBody3D
 var is_carrying: bool = false;
 
+var flight_modifier: float = 1;
+
 func _ready() -> void:
 	print(get_parent())
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
-		velocity += get_gravity() * delta
-
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+		velocity += get_gravity() * delta * flight_modifier
+	else:
+		flight_modifier = 1
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -48,6 +48,12 @@ func handle_direction_change() -> void:
 	# 	player_sprite.flip_h = false
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("jump"):
+		if is_on_floor():
+			velocity.y = JUMP_VELOCITY
+		else:
+			flight_modifier = 0.01
+
 	if event.is_action_pressed("interact"):
 		if interactable_carried == null and potential_interactable != null:
 			interactable_carried = potential_interactable
