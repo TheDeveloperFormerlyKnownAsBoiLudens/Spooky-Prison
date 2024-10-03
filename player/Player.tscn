@@ -22,14 +22,16 @@ mesh = SubResource("CapsuleMesh_irlch")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_hciua")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="InteractableArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.935, 0)
+collision_layer = 0
+collision_mask = 16
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27101, 1.01863, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableArea"]
 shape = SubResource("BoxShape3D_6tk0g")
 
 [node name="CarryPoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.82048, 1.46975, 0)
 
-[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
-[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="InteractableArea" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="InteractableArea" to="." method="_on_area_3d_body_exited"]
