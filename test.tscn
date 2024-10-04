@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b3graphau1nlk"]
+[gd_scene load_steps=12 format=3 uid="uid://b3graphau1nlk"]
 
 [ext_resource type="PackedScene" uid="uid://cetf7h4prmcgv" path="res://player/Player.tscn" id="1_vashq"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_urkn4"]
@@ -6,8 +6,12 @@
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="4_fmiu1"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_4up8a"]
 [ext_resource type="PackedScene" uid="uid://dcy4yf21wmasw" path="res://interactables/liftable.tscn" id="6_3qrlu"]
+[ext_resource type="PackedScene" uid="uid://bdpy577v5hofd" path="res://interactables/grapple_point.tscn" id="7_8ugo5"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_btqqo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0sr5r"]
+size = Vector3(3, 1, 1)
 
 [sub_resource type="Resource" id="Resource_epfl0"]
 script = ExtResource("3_akfkg")
@@ -35,7 +39,7 @@ light_energy = 10.0
 spot_range = 39.932
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4534, 5.21182)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.79858, 9.00113)
 
 [node name="PhantomCameraHost" type="Node" parent="Camera3D"]
 script = ExtResource("5_4up8a")
@@ -55,9 +59,16 @@ shape = SubResource("WorldBoundaryShape3D_btqqo")
 
 [node name="Obstacles" type="Node3D" parent="."]
 
-[node name="ShippingContainer" type="CSGBox3D" parent="Obstacles"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.66484, 0.505313, 0)
-size = Vector3(2.96582, 1, 1)
+[node name="ShippingContainer" type="StaticBody3D" parent="Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0193, 0.428738, 0)
+collision_layer = 2
+collision_mask = 0
+
+[node name="ShippingContainer" type="CSGBox3D" parent="Obstacles/ShippingContainer"]
+size = Vector3(3, 1, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/ShippingContainer"]
+shape = SubResource("BoxShape3D_0sr5r")
 
 [node name="ShippingContainer2" type="CSGBox3D" parent="Obstacles"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.26112, 0.505313, -4.79794)
@@ -68,7 +79,7 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -7.261
 size = Vector3(2.96582, 1, 1)
 
 [node name="PhantomCamera3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4534, 5.21182)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.79858, 9.00113)
 script = ExtResource("2_urkn4")
 tween_resource = SubResource("Resource_epfl0")
 camera_3d_resource = SubResource("Resource_u1n5w")
@@ -78,4 +89,7 @@ collision_layer = 4
 collision_mask = 2
 
 [node name="Liftable" parent="." instance=ExtResource("6_3qrlu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.52434, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.55877, 0, 0)
+
+[node name="GrapplePoint" parent="." instance=ExtResource("7_8ugo5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.78802, 3.80063, -0.292898)

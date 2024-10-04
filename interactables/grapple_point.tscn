@@ -1,0 +1,77 @@
+[gd_scene load_steps=6 format=3 uid="uid://bdpy577v5hofd"]
+
+[ext_resource type="Script" path="res://interactables/grapple_point.gd" id="1_cj3v4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yhok5"]
+
+[sub_resource type="Animation" id="Animation_qfflw"]
+resource_name = "swing"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GrappleUser:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-3, 0, 0), Vector3(0, -2.39209, 0), Vector3(3, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3y1ij"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GrappleUser:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-3, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cf4nx"]
+_data = {
+"RESET": SubResource("Animation_3y1ij"),
+"swing": SubResource("Animation_qfflw")
+}
+
+[node name="GrapplePoint" type="Node3D"]
+script = ExtResource("1_cj3v4")
+
+[node name="StartArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StartArea"]
+shape = SubResource("BoxShape3D_yhok5")
+
+[node name="StartGrapplePoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.00009, 0, 0)
+visible = false
+
+[node name="CSGBox3D" type="CSGBox3D" parent="StartGrapplePoint"]
+
+[node name="EndGrapplePoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+visible = false
+
+[node name="CSGBox3D" type="CSGBox3D" parent="EndGrapplePoint"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_cf4nx")
+}
+
+[node name="GrappleUser" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="GrappleUser"]
+visible = false
+
+[connection signal="body_entered" from="StartArea" to="." method="_on_start_area_body_entered"]

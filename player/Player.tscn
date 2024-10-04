@@ -33,5 +33,15 @@ shape = SubResource("BoxShape3D_6tk0g")
 [node name="CarryPoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.82048, 1.46975, 0)
 
+[node name="States" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="States"]
+
+[node name="Move" type="Node" parent="States"]
+
+[node name="Glide" type="Node" parent="States"]
+
+[node name="Grapple" type="Node" parent="States"]
+
 [connection signal="body_entered" from="InteractableArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="InteractableArea" to="." method="_on_area_3d_body_exited"]
