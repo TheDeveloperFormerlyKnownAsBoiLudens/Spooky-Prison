@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-signal state_changed
+signal state_changed(states_stack: Array[State])
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -11,7 +11,8 @@ const JUMP_VELOCITY = 4.5
 @onready var states_map: Dictionary = {
 	"idle": $States/Idle,
 	"move": $States/Move,
-	"jump": $States/Jump
+	"jump": $States/Jump,
+	"glide": $States/Glide
 }
 
 var states_stack: Array[State] = []

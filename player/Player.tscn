@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://cetf7h4prmcgv"]
+[gd_scene load_steps=10 format=3 uid="uid://cetf7h4prmcgv"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_010mo"]
 [ext_resource type="Script" path="res://player/states/idle.gd" id="2_1f8d6"]
 [ext_resource type="Script" path="res://player/states/move.gd" id="3_qqut4"]
 [ext_resource type="Script" path="res://player/states/jump.gd" id="4_li4bl"]
 [ext_resource type="Script" path="res://player/state_label.gd" id="5_ag2o8"]
+[ext_resource type="Script" path="res://player/states/glide.gd" id="5_tr1cm"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_irlch"]
 radial_segments = 8
@@ -48,9 +49,13 @@ script = ExtResource("3_qqut4")
 [node name="Jump" type="Node" parent="States"]
 script = ExtResource("4_li4bl")
 
+[node name="Glide" type="Node" parent="States"]
+script = ExtResource("5_tr1cm")
+
 [node name="StateLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 script = ExtResource("5_ag2o8")
 
+[connection signal="state_changed" from="." to="StateLabel" method="_on_player_state_changed"]
 [connection signal="body_entered" from="InteractableArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="InteractableArea" to="." method="_on_area_3d_body_exited"]
