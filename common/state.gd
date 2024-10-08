@@ -18,3 +18,6 @@ func physics_update(_delta: float) -> void:
 func player_input(_event: InputEvent) -> void:
 	return
 
+func player_unhandled_input(_event: InputEvent) -> void:
+	return
+
